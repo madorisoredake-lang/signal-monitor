@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from “react”;
 
-// ── THEME ──────────────────────────────────────────────
+// – THEME –––––––––––––––––––––––
 const T = {
 bg:      “#f0f2f5”,
 surface: “#ffffff”,
@@ -17,7 +17,7 @@ bear:    “#dc2626”,
 neu:     “#d97706”,
 };
 
-// ── WATCHLIST ──────────────────────────────────────────
+// – WATCHLIST ——————————————
 const WATCHLIST = [
 {id:“3611”, label:“マツオカ”,    type:“jp”},
 {id:“378A”, label:“ヒット”,      type:“jp”},
@@ -36,20 +36,20 @@ const TAPE_ITEMS = [
 [“マツオカ3611”,“2,441”,”-0.08%”,false], [“ヒット378A”,“2,495”,”+11.4%”,true],
 [“ヤマシン6240”,“510”,”-20.9%”,false],   [“たけびし7510”,“2,577”,”+8.1%”,true],
 [“7837”,“335”,”-48.5%”,false],           [“スペース9622”,“1,617”,”+12.1%”,true],
-[“BTC”,“¥14.52M”,”+3.5%”,true],         [“ETH”,“¥481K”,”+1.8%”,true],
-[“XRP”,“¥223”,”+28%”,true],             [“DOGE”,“¥15”,”+4%”,true],
+[“BTC”,“JPY14.52M”,”+3.5%”,true],         [“ETH”,“JPY481K”,”+1.8%”,true],
+[“XRP”,“JPY223”,”+28%”,true],             [“DOGE”,“JPY15”,”+4%”,true],
 ];
 
 const SEGS = [
 [“ALL”,“all”,null], [“JP株”,“jp”,T.jp], [“CRYPTO”,“crypto”,T.crypto],
-[“▲BULL”,“bull”,T.bull], [“▼BEAR”,“bear”,T.bear],
+[”^BULL”,“bull”,T.bull], [“vBEAR”,“bear”,T.bear],
 ];
 
-// ── SENTIMENT HELPERS ──────────────────────────────────
+// – SENTIMENT HELPERS –––––––––––––––––
 function sc(s) { return s===“bull”?T.bull:s===“bear”?T.bear:T.neu; }
-function si(s) { return s===“bull”?“▲”:s===“bear”?“▼”:“◆”; }
+function si(s) { return s===“bull”?”^”:s===“bear”?“v”:”*”; }
 
-// ── ARTICLE CARD ───────────────────────────────────────
+// – ARTICLE CARD —————————————
 function Card({ a, idx }) {
 const [open, setOpen] = useState(false);
 const color = sc(a.sentiment);
@@ -104,7 +104,7 @@ React.createElement(“div”, { style:{ fontSize:12, color:T.sub, lineHeight:1.
 );
 }
 
-// ── GAUGE ──────────────────────────────────────────────
+// – GAUGE –––––––––––––––––––––––
 function Gauge({ articles }) {
 if (!articles.length) return React.createElement(“div”, { style:{ fontSize:12, color:T.dim, padding:“8px 0” } }, “データなし”);
 const n = articles.length;
@@ -133,7 +133,7 @@ React.createElement(“div”, { style:{ fontSize:9, color:T.dim, letterSpacing:
 );
 }
 
-// ── MAIN APP ───────────────────────────────────────────
+// – MAIN APP —————————————––
 export default function App() {
 const [articles, setArticles]   = useState([]);
 const [trending, setTrending]   = useState([]);
@@ -144,7 +144,7 @@ const [filters,  setFilters]    = useState(new Set());
 const [seg,      setSeg]        = useState(“all”);
 const tapeRef = useRef(null);
 
-// ── FETCH NEWS via Anthropic API + web_search tool ──
+// – FETCH NEWS via Anthropic API + web_search tool –
 const fetchNews = async () => {
 setLoading(true);
 setError(null);
@@ -234,7 +234,7 @@ const mw = filters.size===0 || (a.tickers||[]).some(t=>filters.has(t));
 return ms && mw;
 });
 
-// ── RENDER ─────────────────────────────────────────
+// – RENDER —————————————–
 const globalStyle = `* { box-sizing:border-box; margin:0; padding:0; } html,body,#root { height:100%; } @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} } @keyframes blink  { 0%,100%{opacity:1} 50%{opacity:0.25} } @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} } @keyframes spin   { to{transform:rotate(360deg)} } ::-webkit-scrollbar { width:3px; } ::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:2px; }`;
 
 return React.createElement(“div”, {
@@ -243,12 +243,12 @@ style: { display:“flex”, flexDirection:“column”, height:“100vh”, ove
 React.createElement(“style”, { dangerouslySetInnerHTML:{ __html: globalStyle } }),
 
 ```
-// ── TOPBAR (fixed) ─────────────────────────────
+// -- TOPBAR (fixed) -----------------------------
 React.createElement("div", { style:{ flexShrink:0, display:"flex", alignItems:"stretch", height:50, background:T.header, zIndex:100 } },
   React.createElement("div", { style:{ display:"flex", alignItems:"center", padding:"0 16px", borderRight:"1px solid #334155", flexShrink:0 } },
     React.createElement("div", null,
       React.createElement("div", { style:{ fontSize:18, fontWeight:900, letterSpacing:4, color:"#f8fafc" } }, "SIGNAL"),
-      React.createElement("div", { style:{ fontSize:8, color:"#64748b", letterSpacing:2 } }, "日本株 × 暗号資産")
+      React.createElement("div", { style:{ fontSize:8, color:"#64748b", letterSpacing:2 } }, "日本株 x 暗号資産")
     )
   ),
   React.createElement("div", { style:{ flex:1, overflow:"hidden", display:"flex", alignItems:"center" } },
@@ -269,10 +269,10 @@ React.createElement("div", { style:{ flexShrink:0, display:"flex", alignItems:"s
   React.createElement("button", {
     onClick: fetchNews, disabled: loading,
     style:{ padding:"0 14px", background:"transparent", border:"none", borderLeft:"1px solid #334155", color:"#94a3b8", fontFamily:"inherit", fontSize:10, letterSpacing:1, cursor:"pointer" }
-  }, loading ? "⟳..." : "↻ REFRESH")
+  }, loading ? "......" : "R REFRESH")
 ),
 
-// ── WATCHLIST (fixed) ──────────────────────────
+// -- WATCHLIST (fixed) --------------------------
 React.createElement("div", { style:{ flexShrink:0, display:"flex", alignItems:"center", height:42, padding:"0 14px", borderBottom:"1px solid "+T.border, gap:5, overflowX:"auto", background:T.surface, boxShadow:"0 1px 3px rgba(0,0,0,0.05)" } },
   React.createElement("span", { style:{ fontSize:8, color:T.dim, letterSpacing:2, flexShrink:0, marginRight:4 } }, "WATCHLIST"),
   WATCHLIST.map(w => {
@@ -288,10 +288,10 @@ React.createElement("div", { style:{ flexShrink:0, display:"flex", alignItems:"c
   filters.size > 0 && React.createElement("button", {
     onClick:()=>setFilters(new Set()),
     style:{ padding:"2px 7px", background:"transparent", border:"1px solid "+T.border, borderRadius:4, color:T.dim, fontSize:9, fontFamily:"inherit", cursor:"pointer", flexShrink:0 }
-  }, "✕")
+  }, "x")
 ),
 
-// ── BODY (scrolls) ─────────────────────────────
+// -- BODY (scrolls) -----------------------------
 React.createElement("div", { style:{ flex:1, display:"grid", gridTemplateColumns:"3fr 1fr", overflow:"hidden" } },
 
   // LEFT: feed
@@ -305,7 +305,7 @@ React.createElement("div", { style:{ flex:1, display:"grid", gridTemplateColumns
         }, l)
       ),
       React.createElement("span", { style:{ marginLeft:"auto", fontSize:10, color:T.dim } }, filtered.length+" stories"),
-      error && React.createElement("span", { style:{ fontSize:9, color:T.bear, marginLeft:8, maxWidth:120, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" } }, "⚠ "+error)
+      error && React.createElement("span", { style:{ fontSize:9, color:T.bear, marginLeft:8, maxWidth:120, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" } }, "! "+error)
     ),
 
     // scrollable feed
@@ -337,7 +337,7 @@ React.createElement("div", { style:{ flex:1, display:"grid", gridTemplateColumns
           React.createElement("div", { key:i, style:{ display:"flex", alignItems:"center", gap:5, padding:"5px 7px", background:T.card, border:"1px solid "+T.border, borderRadius:4 } },
             React.createElement("span", { style:{ fontSize:9, color:T.dim, width:12 } }, i+1),
             React.createElement("span", { style:{ fontSize:11, flex:1, fontFamily:"system-ui,sans-serif" } }, k.kw),
-            React.createElement("span", { style:{ fontSize:11, color:k.t==="up"?T.bull:k.t==="down"?T.bear:T.dim } }, k.t==="up"?"↑":k.t==="down"?"↓":"→")
+            React.createElement("span", { style:{ fontSize:11, color:k.t==="up"?T.bull:k.t==="down"?T.bear:T.dim } }, k.t==="up"?"^":k.t==="down"?"v":">")
           )
         )
       )
